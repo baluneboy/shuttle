@@ -1,7 +1,7 @@
 # shuttle
 Read and display Space Shuttle vibratory acceleration data.
 
-# The Space Acceleration Measurement System (SAMS) on USMP-4 (STS-87) Launched in 1997
+# Space Acceleration Measurement System (SAMS) on USMP-4 (STS-87) Launched in 1997
 
 Unit F, TSH A on Forward MPESS Carrier (Near AADSF) Cut-off = 10 Hz (50 samples/sec)
 
