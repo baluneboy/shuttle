@@ -53,8 +53,8 @@ def plot_sleep_to_wake_data(data_dir, unit='F', tsh='B', axis='X'):
     # see Appendix p. B-1 of Summary Report of Mission Acceleration Measurements for STS-87
     # to get equation that shows how to compute overall (combined XYZ) PSDs
 
-    # FIXME I have not verified PSD magnitude, you should using Parseval's theorem, but
-    # be sure to demean the data as a first step; otherwise, DC component can dominate RMS value
+    # FIXME verify absolute PSD magnitude, try using Parseval's theorem, but...
+    # be sure to demean the (vibratory) data as a first step (ignore DC component)
 
     # set y-limits for cut-off frequency of this sensor head (25 Hz)
     plt.ylim((0, Fc))
@@ -76,8 +76,8 @@ def plot_sleep_to_wake_data(data_dir, unit='F', tsh='B', axis='X'):
 
 if __name__ == "__main__":
 
-    # Change this to whatever local path you have the data saved
-    data_dir = '/home/ken/data/usmp4'
+    # local top-level path where you have saved the data
+    data_dir = 'G:\usmp4'  # FIXME change this to your local storage
 
     # Plot to wake transition (try unit='F', tsh='B', axis='X' for starters)
     plot_sleep_to_wake_data(data_dir, unit='F', tsh='B', axis='X')

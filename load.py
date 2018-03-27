@@ -31,9 +31,18 @@ def get_hour_files(axis, day, hour, unit, tsh, data_dir='/home/ken/data/usmp4'):
     return files
 
 
+def padread(filename, columns=4, out_dtype=np.float32):
+    """return 2d numpy array of float32's read from filename input"""
+    with open(filename, "rb") as f:
+        A = np.fromfile(f, dtype=np.float32) # accel file: 32-bit float "singles"
+    B = np.reshape(A, (-1, columns))
+    if B.dtype == out_dtype:
+        return B
+    return B.astype(out_dtype)
+
+
 def build_numpy_array(fnames):
     """build numpy array from data read from list of filenames"""
-    from ugaudio.load import padread
     arr = np.empty((0, 1), dtype=np.float32)
     print 'building array...'
     for fname in fnames:
@@ -51,4 +60,3 @@ def get_hour_range_files(data_dir, day, h1, h2, unit='F', tsh='B', axis='X'):
     for hr in range(h1, h2+1):
         some_files += get_hour_files(axis, day, hr, unit, tsh, data_dir=data_dir)
     return some_files
-
