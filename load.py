@@ -15,7 +15,7 @@ SAMS = {
 
 
 def get_accel_dir(day, unit, tsh, data_dir):
-    """return accel subdirectory string given integer day and strings for unit, head and usmp4 dir"""
+    """return string for accel directory given integer day and strings for unit, head and usmp4 dir"""
     # like /home/ken/data/usmp4/usmp_4F_1/HEADB/DAY000/ACCEL
     u = 'usmp_4%s_1' % unit
     h = 'HEAD%s' % tsh
@@ -24,7 +24,7 @@ def get_accel_dir(day, unit, tsh, data_dir):
 
 
 def get_hour_files(axis, day, hour, unit, tsh, data_dir='/home/ken/data/usmp4'):
-    """return list of accel data files for given axis, day, hour, etc."""
+    """return list of strings (accel data filenames) for given axis, day, hour, etc."""
     acc_dir = get_accel_dir(day, unit=unit, tsh=tsh, data_dir=data_dir)
     glob_pat = os.path.join(acc_dir, '%s%sM%03d%02d.*' % (tsh, axis, day, hour))  # full filename to like BXM00018.55R
     files = sorted(glob.glob(glob_pat))
@@ -32,9 +32,9 @@ def get_hour_files(axis, day, hour, unit, tsh, data_dir='/home/ken/data/usmp4'):
 
 
 def padread(filename, columns=4, out_dtype=np.float32):
-    """return 2d numpy array of float32's read from filename input"""
+    """return 2d numpy array of floats read from filename input"""
     with open(filename, "rb") as f:
-        A = np.fromfile(f, dtype=np.float32) # accel file: 32-bit float "singles"
+        A = np.fromfile(f, dtype=np.float32)  # accel file: 32-bit float "singles"
     B = np.reshape(A, (-1, columns))
     if B.dtype == out_dtype:
         return B
@@ -42,7 +42,7 @@ def padread(filename, columns=4, out_dtype=np.float32):
 
 
 def build_numpy_array(fnames):
-    """build numpy array from data read from list of filenames"""
+    """return numpy array built from data read from list of filenames"""
     arr = np.empty((0, 1), dtype=np.float32)
     print 'building array...'
     for fname in fnames:
@@ -55,7 +55,7 @@ def build_numpy_array(fnames):
 
 
 def get_hour_range_files(data_dir, day, h1, h2, unit='F', tsh='B', axis='X'):
-    """get list of accel data files for this day, hour range, unit, etc."""
+    """return list of strings (accel data filenames) given day, hour range, unit, etc."""
     some_files = []
     for hr in range(h1, h2+1):
         some_files += get_hour_files(axis, day, hr, unit, tsh, data_dir=data_dir)
