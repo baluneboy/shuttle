@@ -34,11 +34,11 @@ def get_hour_files(axis, day, hour, unit, tsh, data_dir='/home/ken/data/usmp4'):
 def padread(filename, columns=4, out_dtype=np.float32):
     """return 2d numpy array of floats read from filename input"""
     with open(filename, "rb") as f:
-        A = np.fromfile(f, dtype=np.float32)  # accel file: 32-bit float "singles"
-    B = np.reshape(A, (-1, columns))
-    if B.dtype == out_dtype:
-        return B
-    return B.astype(out_dtype)
+        a = np.fromfile(f, dtype=np.float32)  # accel file: 32-bit float "singles"
+    b = np.reshape(a, (-1, columns))
+    if b.dtype == out_dtype:
+        return b
+    return b.astype(out_dtype)
 
 
 def build_numpy_array(fnames):
