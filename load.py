@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import re
 import glob
 import numpy as np
 
@@ -12,6 +13,16 @@ SAMS = {
     ('Unit G', 'TSH A'): ( 50,   5, 'Rear MPESS Carrier (Inside IDGE)'),
     ('Unit G', 'TSH B'): (250, 100, 'Rear MPESS Carrier (Inside CHeX)'),
 }
+
+
+def parse_basename(bname):
+    """return tuple (tsh, axis, ddd, hh, this_file, total_files) given basename"""
+    # input like BXM00018.15R
+    m = re.match('(?P<tsh>.)(?P<axis>.)(.)(?P<day>\d{3})(?P<hour>\d{2})\.(?P<this_file>\d)(?P<num_files>\d).', bname)
+    if m:
+        return m.group('tsh'), m.group('axis'), m.group('day'), m.group('hour'), m.group('this_file'), m.group('num_files')
+    else:
+        return None
 
 
 def get_accel_dir(day, unit, tsh, data_dir):

@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 from load import get_hour_range_files, build_numpy_array
-from load import SAMS
+from load import SAMS, parse_basename
 
 
 def plot_example_sleep_to_wake(data_dir, unit='F', tsh='B', axis='X'):
@@ -14,6 +15,9 @@ def plot_example_sleep_to_wake(data_dir, unit='F', tsh='B', axis='X'):
 
     # load wake transition data
     xfiles = get_hour_range_files(data_dir, day, hour-1, hour, unit=unit, tsh=tsh, axis=axis)
+    tsh1, axis1, day1, hour1, this_file, num_files = parse_basename(os.path.basename(xfiles[0]))
+    minute1 = int(60.0 * (float(this_file) - 1) / float(num_files))
+    ddd_hh_mm = 'Day %s, Hour %s, Minute %02d' % (day1, hour1, minute1)
     x = build_numpy_array(xfiles)
     print '%d total data pts in array' % x.shape[0]
 
@@ -37,7 +41,7 @@ def plot_example_sleep_to_wake(data_dir, unit='F', tsh='B', axis='X'):
     fig = plt.figure(num=None, figsize=(8, 6), dpi=120, facecolor='w', edgecolor='k')
 
     # super title
-    plt.suptitle('SAMS Unit %s, TSH %s\n%s' % (unit, tsh, location))
+    plt.suptitle('SAMS Unit %s, TSH %s\n%s\nTime Zero: MET %s' % (unit, tsh, location, ddd_hh_mm))
 
     # plot x-axis accel. vs. time
     ax1 = plt.subplot(211)
