@@ -17,7 +17,7 @@ def plot_example_sleep_to_wake(data_dir, unit='F', tsh='B', axis='X'):
     xfiles = get_hour_range_files(data_dir, day, hour-1, hour, unit=unit, tsh=tsh, axis=axis)
     tsh1, axis1, day1, hour1, this_file, num_files = parse_basename(os.path.basename(xfiles[0]))
     minute1 = int(60.0 * (float(this_file) - 1) / float(num_files))
-    ddd_hh_mm = 'Day %s, Hour %s, Minute %02d' % (day1, hour1, minute1)
+    ddd_hh_mm = '%s/%s:%02d:00' % (day1, hour1, minute1)
     x = build_numpy_array(xfiles)
     print '%d total data pts in array' % x.shape[0]
 
@@ -41,7 +41,7 @@ def plot_example_sleep_to_wake(data_dir, unit='F', tsh='B', axis='X'):
     fig = plt.figure(num=None, figsize=(8, 6), dpi=120, facecolor='w', edgecolor='k')
 
     # super title
-    plt.suptitle('SAMS Unit %s, TSH %s\n%s\nTime Zero: MET %s' % (unit, tsh, location, ddd_hh_mm))
+    plt.suptitle('SAMS Unit %s, TSH %s\n%s\nt = 0 at MET %s' % (unit, tsh, location, ddd_hh_mm))
 
     # plot x-axis accel. vs. time
     ax1 = plt.subplot(211)
