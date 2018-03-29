@@ -21,15 +21,15 @@ def plot_example_sleep_to_wake(data_dir, unit='F', tsh='B', axis='X'):
     x = build_numpy_array(xfiles)
     print '%d total data pts in array' % x.shape[0]
 
-    # FIXME fine-tune NFFT and noverlap to get desired freq. and time resolution
-    # that is, compute NFFT and noverlap from your desired resolution
-    # -- NFFT for freq. resolution
+    # FIXME fine-tune nfft and noverlap to get desired freq. and time resolution
+    # that is, compute nfft and noverlap from your desired resolution
+    # -- nfft for freq. resolution
     # -- noverlap for temporal resolution
-    # NOTE: many canned routines like a power of two for NFFT for computational
+    # NOTE: many canned routines like a power of two for nfft for computational
     #       efficiency/speed [check matplotlib's underlying routine]
 
     # plot color spectrogram to see crew wake at 19:00
-    NFFT = 4096  # the length of the windowing segments (finer freq. resolution comes from larger NFFT)
+    nfft = 4096  # the length of the windowing segments (finer freq. resolution comes from larger nfft)
     head = SAMS[('Unit %s' % unit, 'TSH %s' % tsh)]
     (Fs, Fc, location) = head  # Fs (sa/sec)
 
@@ -49,19 +49,19 @@ def plot_example_sleep_to_wake(data_dir, unit='F', tsh='B', axis='X'):
     plt.ylabel('%s-Axis Accel. [g]' % axis)
 
     # plot spectrogram of time-frequency domain data (to better see wake transition), where:
-    # -- Pxx = segments x freqs array of instantaneous power
+    # -- pxx = segments x freqs array of instantaneous power
     # -- freqs = frequency vector
     # -- bins = centers of the time bins in which power is computed
     # -- im = matplotlib.image.AxesImage instance
     ax2 = plt.subplot(212, sharex=ax1)
-    Pxx, freqs, bins, im = plt.specgram(x[:], NFFT=NFFT, Fs=Fs, noverlap=NFFT/2, cmap='jet', vmin=-140, vmax=-70)
+    pxx, freqs, bins, im = plt.specgram(x[:], NFFT=nfft, Fs=Fs, noverlap=nfft/2, cmap='jet', vmin=-140, vmax=-70)
 
     # FIXME incorporate combined PSDs computation...
     # see Appendix p. B-1 of Summary Report of Mission Acceleration Measurements for STS-87
     # to get equation that shows how to compute overall (combined XYZ) PSDs
 
     # FIXME verify absolute PSD magnitude, try using Parseval's theorem, but...
-    # be sure to demean the (vibratory) data as a first step (ignore DC component)
+    # be sure to demean the (vibratory) data as a first step; no fidelity for DC component (average value)
 
     # set y-limits for cut-off frequency of this sensor head (25 Hz)
     plt.ylim((0, Fc))
@@ -81,8 +81,7 @@ def plot_example_sleep_to_wake(data_dir, unit='F', tsh='B', axis='X'):
     plt.show()
 
 
-if __name__ == "__main__":
-
+def main():
     # local top-level path where you have saved the data
     data_dir = 'G:\usmp4'  # FIXME change this to your local storage
 
@@ -90,3 +89,7 @@ if __name__ == "__main__":
     plot_example_sleep_to_wake(data_dir, unit='F', tsh='B', axis='X')
 
     # compare with Appendix p. B-7 of Summary Report of Mission Acceleration Measurements for STS-87
+
+
+if __name__ == "__main__":
+    main()

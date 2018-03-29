@@ -8,9 +8,9 @@ import numpy as np
 
 # see p. 5 of Summary Report of Mission Acceleration Measurements for STS-87
 SAMS = {
-    ('Unit F', 'TSH A'): ( 50,  10, 'Forward MPESS Carrier (Near AADSF)'),
+    ('Unit F', 'TSH A'): (50,   10, 'Forward MPESS Carrier (Near AADSF)'),
     ('Unit F', 'TSH B'): (125,  25, 'Forward MPESS Carrier (Near MEPHISTO)'),
-    ('Unit G', 'TSH A'): ( 50,   5, 'Rear MPESS Carrier (Inside IDGE)'),
+    ('Unit G', 'TSH A'): (50,    5, 'Rear MPESS Carrier (Inside IDGE)'),
     ('Unit G', 'TSH B'): (250, 100, 'Rear MPESS Carrier (Inside CHeX)'),
 }
 
@@ -20,7 +20,9 @@ def parse_basename(bname):
     # input like BXM00018.15R
     m = re.match('(?P<tsh>.)(?P<axis>.)(.)(?P<day>\d{3})(?P<hour>\d{2})\.(?P<this_file>\d)(?P<num_files>\d).', bname)
     if m:
-        return m.group('tsh'), m.group('axis'), m.group('day'), m.group('hour'), m.group('this_file'), m.group('num_files')
+        return m.group('tsh'), m.group('axis'),\
+               m.group('day'), m.group('hour'),\
+               m.group('this_file'), m.group('num_files')
     else:
         return None
 
@@ -44,8 +46,7 @@ def get_hour_files(axis, day, hour, unit, tsh, data_dir='/home/ken/data/usmp4'):
 
 def padread(filename, columns=4, out_dtype=np.float32):
     """return 2d numpy array of floats read from filename input"""
-    with open(filename, "rb") as f:
-        a = np.fromfile(f, dtype=np.float32)  # accel file: 32-bit float "singles"
+    a = np.fromfile(filename, dtype=np.float32)  # accel file has 32-bit floats
     b = np.reshape(a, (-1, columns))
     if b.dtype == out_dtype:
         return b
